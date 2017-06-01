@@ -42,4 +42,27 @@ function printSongInfo(body) {
 		console.log(`Track ${i+1}: Playing At:`, nextPlayedAt);
 		console.log();
 	}
+	recordNowPlaying(artist, title, playedAt);
+  checkDuplicate();
+}
+
+function recordNowPlaying(artist, title, playedAt) {
+  if (title === "101.7 WSFM , Sydney's Pure Gold") {
+     console.log("In Ad Break or Talk Show");
+     return;
+  }
+  const lastTrack = songs[songs.length - 1];
+	if (lastTrack.title !== title) {
+    songs.push({artist, title, playedAt});
+  }
+}
+
+function checkDuplicate() {
+  for (let i=0;i<songs.length;i++) {
+    const currentTitle = songs[i].title;
+    const foundSong = songs.find(item => item.title === currentTitle);
+    if (foundSong !== undefined) {
+      console.log("Duplicate Song Found");
+    }
+  }
 }
