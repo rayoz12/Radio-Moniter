@@ -73,7 +73,12 @@ function printSongInfo(body) {
 		console.log(`Track ${i+1}: Artist:`, nextArtist);
 		console.log(`Track ${i+1}: Title:`, nextTitle);
 		console.log(`Track ${i+1}: Playing At:`, nextPlayedAt);
-		console.log();
+		const foundSong = songs.tracks.find((item, index) => item.title === track.title);
+		if (foundSong !== undefined) {
+			console.log("Expected Duplicate Song!", foundSong);
+		} else {
+			console.log();
+		}
 	}
 	//console.log("-------------Songs Played-------------");
 	//console.log(songs.tracks);
@@ -111,7 +116,13 @@ function recordNowPlaying(artist, title, playedAt) {
 function checkDuplicate() {
   for (let i=0;i<songs.tracks.length;i++) {
     const currentTitle = songs.tracks[i].title;
-    const foundSong = songs.tracks.find((item, index) => item.title === currentTitle && index !== i);
+	const currentArtist = songs.tracks[i].artist;
+	const thresholdTime = Date.now() - 1000*60*5;
+    const foundSong = songs.tracks.find((item, index) => 
+		item.title === currentTitle && 
+		item.artist === currentArtist && 
+		index !== i && 
+		(new Date(item.playedAt).getTime() < thresholdTime));
     if (foundSong !== undefined) {
 		const message = `${songs.tracks[i].title} played at: ${songs.tracks[i].playedAt} (in index ${i}) and again at ${foundSong.playedAt}`
 		notifier.notify({
