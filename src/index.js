@@ -4,8 +4,10 @@ const jsonfile = require('jsonfile');
 const fs = require('fs');
 const util = require("util");
 
+const date = new Date().toISOString().slice(0,10);
+
 let songs = {
-	date: new Date().toISOString().slice(0,10),
+	date,
 	tracks: []
 };
 
@@ -14,7 +16,7 @@ const ignoredTitles = [
 	"Audio Type Changed to To Be Created"
 ]
 
-const file = './songs.json'
+const file = './songs-' + date + '.json'
 //create if songs.json doesn't exist
 if (!fs.existsSync(file)) {
     jsonfile.writeFileSync(file, songs);
