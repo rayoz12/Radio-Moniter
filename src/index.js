@@ -3,8 +3,9 @@ const notifier = require('node-notifier');
 const jsonfile = require('jsonfile');
 const fs = require('fs');
 const util = require("util");
+const moment = require("moment");
 
-const date = new Date().toISOString().slice(0,10);
+const date = moment().format("YYYY-MM-DD");
 
 let songs = {
 	date,
@@ -35,11 +36,11 @@ setInterval(makeTrackRequest, 10000);
 function makeTrackRequest() {
 	request('http://media.arn.com.au/XML-JSON.aspx?source=www.wsfm.com.au&feedUrl=xml/wsfm1017_now.xml', function (error, response, body) {
 		if (error !== null) {
-			console.log("Request error at " + new Date().toLocaleString());
+			console.log("Request error at " + moment().format());
 			return;
 		}
 		console.log("\u001b[2J\u001b[0;0H");
-		console.log("INFO AT: " + new Date().toLocaleString());
+		console.log("INFO AT: " + moment().format());
 		try {
 			printSongInfo(JSON.parse(body));
 		}
